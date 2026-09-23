@@ -1,0 +1,23 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+
+# macOS
+.DS_Store
+
+# Misc scratch
+_to_delete/
+
+# FUSE stale inodes (Cowork mount)
+.fuse_hidden*
