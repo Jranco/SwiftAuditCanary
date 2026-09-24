@@ -54,13 +54,20 @@ public struct AuditCanaryConfig {
     /// app-specific field names the generic list won't know about.
     public var additionalSuspiciousTerms: [String]
 
+    /// Hosts the network probe must never intercept. Use for endpoints
+    /// requiring mutual TLS or a pinned/private CA — the interceptor
+    /// cannot reproduce those credentials, so replaying them fails.
+    public var excludedHosts: [String]
+
     public init(
         outputs: [Output] = [.console],
         probes: Probes = .all,
-        additionalSuspiciousTerms: [String] = []
+        additionalSuspiciousTerms: [String] = [],
+        excludedHosts: [String] = []
     ) {
         self.outputs = outputs
         self.probes = probes
         self.additionalSuspiciousTerms = additionalSuspiciousTerms
+        self.excludedHosts = excludedHosts
     }
 }

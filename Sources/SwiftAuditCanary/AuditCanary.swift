@@ -127,7 +127,7 @@ public enum AuditCanary {
             probes.append(UserDefaultsProbe(additionalSuspiciousTerms: config.additionalSuspiciousTerms))
         }
         if config.probes.contains(.bundleSecrets) { probes.append(BundleSecretProbe()) }
-        if config.probes.contains(.network)       { probes.append(NetworkProbe()) }
+        if config.probes.contains(.network)       { probes.append(NetworkProbe(excludedHosts: Set(config.excludedHosts))) }
         return probes
     }
 }

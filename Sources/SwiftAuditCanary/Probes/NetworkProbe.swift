@@ -16,6 +16,13 @@ import Combine
 final class NetworkProbe: Probe {
     let name = "Network"
 
+    /// Hosts to leave completely untouched (never intercepted/replayed).
+    let excludedHosts: Set<String>
+    init(excludedHosts: Set<String> = []) {
+        self.excludedHosts = excludedHosts
+        CanaryURLProtocol.excludedHosts = excludedHosts
+    }
+
     static private(set) var interceptedCount = 0
     static private(set) var lastRequest = ""
     private static var installed = false
@@ -82,13 +89,21 @@ extension NetworkProbe: LiveProbe {
 /// unaffected. Recursion is prevented by a per-request "handled" marker.
 final class CanaryURLProtocol: URLProtocol, URLSessionDataDelegate {
     private static let handledKey = "CanaryURLProtocolHandled"
+    /// Hosts to leave untouched (mTLS / pinned / private-CA endpoints the
+    /// interceptor cannot faithfully replay). Set from AuditCanaryConfig.
+    static var excludedHosts: Set<String> = []
     private var proxySession: URLSession?
     private var proxyTask: URLSessionTask?
 
     override class func canInit(with request: URLRequest) -> Bool {
         if URLProtocol.property(forKey: handledKey, in: request) != nil { return false }
         guard let scheme = request.url?.scheme?.lowercased() else { return false }
-        return scheme == "http" || scheme == "https"
+        guard scheme == "http" || scheme == "https" else { return false }
+        // Leave excluded hosts entirely alone so the app's own session
+        // handles their TLS. Replaying them here would drop the client
+        // certificate / pinned trust and fail the handshake.
+        if let host = request.url?.host, Self.excludedHosts.contains(host) { return false }
+        return true
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Required for the `.server(port:)` output: iOS prompts on the first
+         incoming connection, and refuses it entirely without this key. -->
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>SwiftAuditCanary demo demonstrates local-network exposure risk to auditors.</string>
+
+    <!-- A deliberately baked-in "secret" so the `bundleSecrets` probe finds
+         something in Info.plist. Fake — replace or remove at will. -->
+    <key>API_KEY</key>
+    <string>demo-bundled-secret-CHANGE-ME</string>
+</dict>
+</plist>

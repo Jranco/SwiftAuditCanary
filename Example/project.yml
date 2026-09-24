@@ -1,0 +1,34 @@
+# XcodeGen spec — generates a runnable iOS app that depends on the local
+# SwiftAuditCanary package (one directory up).
+#
+#   brew install xcodegen        # if you don't have it
+#   cd Example && xcodegen generate && open SwiftAuditCanaryDemo.xcodeproj
+#
+# No XcodeGen? See README.md for the manual "new App target" steps.
+
+name: SwiftAuditCanaryDemo
+options:
+  bundleIdPrefix: com.jranco.demo
+  deploymentTarget:
+    iOS: "16.0"
+
+packages:
+  SwiftAuditCanary:
+    path: ..
+
+targets:
+  SwiftAuditCanaryDemo:
+    type: application
+    platform: iOS
+    sources:
+      - SwiftAuditCanaryDemo
+    settings:
+      base:
+        INFOPLIST_FILE: SwiftAuditCanaryDemo/Info.plist
+        GENERATE_INFOPLIST_FILE: YES
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 0.1.0
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - package: SwiftAuditCanary
+        product: SwiftAuditCanary

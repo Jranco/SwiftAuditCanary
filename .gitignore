@@ -21,3 +21,8 @@ _to_delete/
 
 # FUSE stale inodes (Cowork mount)
 .fuse_hidden*
+Claude outputs/
+
+# XcodeGen output for the demo
+Example/**/GeneratedInfo.plist
+Example/**/xcuserdata/
